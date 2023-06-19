@@ -1,10 +1,46 @@
-<%# <%= javascript_import_module_tag "plugin/prism" %1> %>
-<%= javascript_import_module_tag "plugin/race" %>
 <section class="prompt">
   <pre>
   <code class="language-python">
     <%= @prompt %>
   </code>
   </pre>
-  <input type="text" autofocus=true>
+  <input type="text" id="input" autofocus=true>
 </section>
+<script async defer>
+  function flashGreen(element) {
+      console.log('flashing green');
+      element.style.backgroundColor = 'green';
+      setTimeout(() => element.style.backgroundColor = 'white', 200);
+    }
+
+  const sections = <%= @sections.to_json.html_safe %>;
+  const numWords = sections.length;
+  console.log(sections);
+  let wordsTyped = 0;
+
+  const textInput = document.querySelector('#input');
+
+  function handleNewInput(event) {
+      let content = event.target.value;
+      if (event.key === 'Enter') {
+          event.preventDefault(); // Disable the default Enter key behavior
+          content += '\n'; // Append a newline character
+        }
+      currWord = sections[wordsTyped];
+      console.log(currWord === content);
+      if (content === currWord) {
+          wordsTyped++;
+          event.target.value = "";
+          flashGreen(textInput);
+          if(wordsTyped === numWords) {
+              alert("you finished");
+          }
+          console.log("correct");
+          return;
+        }
+    }
+
+
+  textInput.addEventListener('keyup', handleNewInput, event);
+
+</script>
