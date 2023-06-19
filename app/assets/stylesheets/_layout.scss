@@ -23,9 +23,37 @@ header {
   width: 100vw;
   color: var(--my-white);
   background-color: var(--dark-gray);
+  align-items: center;
+  z-index: 2;
 }
 
-header > h1 {
+header > a {
+  color: var(--my-white);
+  text-decoration: none;
+  font-style: italic;
+  padding-left: 1rem;
+}
+
+header > section {
+  display:flex;
+  align-items:space-between;
+  margin-left: auto;
+}
+
+header > section > a {
+  color: var(--my-white);
+  text-decoration: none;
+  margin-left: 3rem;
+  margin-right: 3rem;
+}
+
+header > section > a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+header > a > h1 {
   font-style: italic;
   padding-left: 1rem;
 }

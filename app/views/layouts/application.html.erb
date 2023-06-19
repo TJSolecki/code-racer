@@ -6,13 +6,21 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
     <header>
-      <h1>Code Racer</h1>
+      <a href="/">
+        <h1>Code Racer</h1>
+      </a>
+      <section>
+        <a href="/users/new">Sign Up</a>
+        <a href="/access/login">Login</a>
+        <a href="/access/logout">Logout</a>
+      </section>
+      
     </header>
     <%= yield %>
   </body>
