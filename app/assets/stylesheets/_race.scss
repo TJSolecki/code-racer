@@ -32,11 +32,19 @@ pre {
   padding-top: 5.5px;
 }
 
+.feedback-container > span {
+  padding-left: 9px;
+}
+
 .feedback-container code {
   color: green;
   border-radius:0 !important;
   background-color: var(--my-white) !important;
   padding:0 !important;
+}
+
+.feedback-container > span > code {
+  white-space: pre-wrap;
 }
 
 .feedback-container > span:last-child > code:last-child {

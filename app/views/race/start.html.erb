@@ -1,8 +1,6 @@
 <section class="prompt">
   <pre>
   <div class="feedback-container">
-    <span><code class=language-python >class </code><code class=language-python>Solution</code></span>
-    <span><code class=language-python >def</code></span>
   </div>
   <code class="language-python">
   <%= @prompt %>
@@ -11,38 +9,76 @@
   <input type="text" id="input" autofocus=true>
 </section>
 <script async defer>
-  function flashGreen(element) {
+  function spanFactory(id) {
+    const span = document.createElement("span");
+    span.id = id;
+    return span;
+  }
+  function codeFactory(contents) {
+    const code = document.createElement("code");
+    code.textContent = contents;
+    code.classList.add("language-python");
+    return code;
+  }
+
+  function flashColor(element, color) {
       console.log('flashing green');
-      element.style.backgroundColor = 'green';
+      element.style.backgroundColor = color;
       setTimeout(() => element.style.backgroundColor = 'white', 200);
-    }
+  }
 
   const sections = <%= @sections.to_json.html_safe %>;
+  const whitespace_array = <%= @whitespace_array.to_json.html_safe %>
   const numWords = sections.length;
-  console.log(sections);
   let wordsTyped = 0;
+  let lineNumber = 0;
 
   const textInput = document.querySelector('#input');
+  const feedbackContainer = document.querySelector(".feedback-container");
+  const lineSpan = spanFactory("line-span");
+  const correctCode = codeFactory("");
+  lineSpan.appendChild(correctCode);
+  feedbackContainer.appendChild(lineSpan);
+  const currCodeElement = codeFactory("");
+  lineSpan.appendChild(currCodeElement);
 
   function handleNewInput(event) {
       let content = event.target.value;
+
       if (event.key === 'Enter') {
           event.preventDefault(); // Disable the default Enter key behavior
           content += '\n'; // Append a newline character
-        }
-      currWord = sections[wordsTyped];
-      console.log(currWord === content);
+      }
+
+      const currWord = sections[wordsTyped];
+      const pattern = new RegExp(`^${content}`);
+      if (currWord.match(pattern)) {
+          currCodeElement.textContent = content;
+          currCodeElement.style.color = "green";
+      }
+      else {
+          currCodeElement.style.color = "red";
+          flashColor(textInput, "red");
+      }
+
       if (content === currWord) {
+          // add new word to correctCode
+          correctCode.textContent += currWord;
+          currCodeElement.textContent = "";
+          
+          if (currWord[currWord.length - 1] === "\n") {
+            lineNumber++;
+            correctCode.textContent += whitespace_array[lineNumber];
+          }
           wordsTyped++;
-          event.target.value = "";
-          flashGreen(textInput);
+          textInput.value = "";
+          flashColor(textInput, "green");
           if(wordsTyped === numWords) {
               alert("you finished");
           }
-          console.log("correct");
           return;
-        }
-    }
+      }
+  }
 
 
   textInput.addEventListener('keyup', handleNewInput, event);
