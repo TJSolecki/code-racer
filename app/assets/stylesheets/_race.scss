@@ -20,3 +20,25 @@ input {
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
+
+pre {
+  position: relative;
+}
+
+.feedback-container {
+  width:100%;
+  height:100%;
+  position:absolute;
+  padding-top: 5.5px;
+}
+
+.feedback-container code {
+  color: green;
+  border-radius:0 !important;
+  background-color: var(--my-white) !important;
+  padding:0 !important;
+}
+
+.feedback-container > span:last-child > code:last-child {
+  border-right: black solid 1px;
+}

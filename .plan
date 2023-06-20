@@ -1,0 +1,15 @@
+TODO:
+  - give user feedback when they type a word incorrectly
+  - show the user where they are in typing in the prompt
+  - display wpm to user
+    - use setInterval every 0.2 seconds or something to calculate it and then update DOM
+  - Have a pop-up kinda thing when the "race" is over and display stats
+    - show how long it took to complete and the wpm
+ 
+
+Long Term TODO:
+  - implement websockets and display the other player's percent progress to the user in some way
+  - keep track of user's average wpm
+  - keep track of all user's races and stats and store them in database
+  - implemnet a profile page which has some visualization of their relevent stats
+  - Add a race alone and a race with others button
