@@ -6,6 +6,8 @@
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
+  // border: black solid 1px;
+  // border-radius: 2rem;
 }
 /* PrismJS 1.29.0
 https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+c+cpp+go+java+markup-templating+php+python+ruby+rust+typescript+zig */
@@ -49,4 +51,6 @@ pre {
 
 .feedback-container > span:last-child > code:last-child {
   border-right: black solid 1px;
+  box-sizing: border-box;
+  margin-right: -1px;
 }

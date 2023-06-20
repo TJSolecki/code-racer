@@ -1,10 +1,10 @@
 TODO:
-  - give user feedback when they type a word incorrectly
-  - show the user where they are in typing in the prompt
   - display wpm to user
     - use setInterval every 0.2 seconds or something to calculate it and then update DOM
   - Have a pop-up kinda thing when the "race" is over and display stats
-    - show how long it took to complete and the wpm
+    - show how long it took to complete, wpm, and accuracy
+      - accuracy (total chars - total missed)/total chars
+  - count down to the start of race
  
 
 Long Term TODO:

@@ -1,4 +1,5 @@
 <section class="prompt">
+
   <pre>
   <div class="feedback-container">
   </div>
@@ -31,6 +32,7 @@
   const whitespace_array = <%= @whitespace_array.to_json.html_safe %>
   const numWords = sections.length;
   let wordsTyped = 0;
+  let charactersTyped = 0;
   let lineNumber = 0;
 
   const textInput = document.querySelector('#input');
@@ -42,6 +44,15 @@
   const currCodeElement = codeFactory("");
   lineSpan.appendChild(currCodeElement);
 
+  const startTime = new Date();
+  const wpmInterval = setInterval( () => {
+      const currentTime = new Date();
+      const elapsedTimeInMilliseconds = endTime - startTime;
+      const elapsedTimeInSeconds = elapsedTimeInMilliseconds / 1000;
+      const elapsedTimeInMinutes = elapsedTimeInSeconds / 60;
+      const wpm = (charactersTyped/5)/elapsedTimeInMinutes;
+  }, 200);
+
   function handleNewInput(event) {
       let content = event.target.value;
 
@@ -51,8 +62,7 @@
       }
 
       const currWord = sections[wordsTyped];
-      const pattern = new RegExp(`^${content}`);
-      if (currWord.match(pattern)) {
+      if (currWord.indexOf(content) === 0) {
           currCodeElement.textContent = content;
           currCodeElement.style.color = "green";
       }
@@ -61,7 +71,7 @@
           flashColor(textInput, "red");
       }
 
-      if (content === currWord) {
+      if (content == currWord) {
           // add new word to correctCode
           correctCode.textContent += currWord;
           currCodeElement.textContent = "";
