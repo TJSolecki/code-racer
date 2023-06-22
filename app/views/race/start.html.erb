@@ -53,13 +53,16 @@
   const currCodeElement = codeFactory("");
   lineSpan.appendChild(currCodeElement);
 
+  let wpm = 0;
   const startTime = new Date();
+  const wpmParagraphElement = document.querySelector("#wpm");
   const wpmInterval = setInterval( () => {
       const endTime = new Date();
       const elapsedTimeInMilliseconds = endTime - startTime;
       const elapsedTimeInSeconds = elapsedTimeInMilliseconds / 1000;
       const elapsedTimeInMinutes = elapsedTimeInSeconds / 60;
-      const wpm = (correctCharactersTyped/5)/elapsedTimeInMinutes;
+      wpm = Math.round((correctCharactersTyped/5)/elapsedTimeInMinutes);
+      wpmParagraphElement.textContent = `${wpm} wpm`;
   }, 200);
 
   function handleNewInput(event) {
@@ -104,7 +107,8 @@
           textInput.value = "";
           flashColor(textInput, "green");
           if(wordsTyped === numWords) {
-              alert("you finished");
+            clearInterval(wpmInterval);
+              alert(`you finished with a wpm of ${wpm}`);
           }
           return;
       }
