@@ -1,10 +1,10 @@
 <section id="prompt-container">
 <section class="prompt">
   <div id="stats-bar">
-    <p id="time-elapsed">0:30</p>
+    <p id="time-elapsed">0:00</p>
     <div id="accuracy-and-wpm-wrapper">
-      <p id="accuracy">95%</p>
-      <p id="wpm">80wpm</p>
+      <p id="accuracy">100%</p>
+      <p id="wpm">0wpm</p>
     </div>
   </div>
   <pre>
@@ -63,6 +63,7 @@
       const elapsedTimeInMinutes = elapsedTimeInSeconds / 60;
       wpm = Math.round((correctCharactersTyped/5)/elapsedTimeInMinutes);
       wpmParagraphElement.textContent = `${wpm} wpm`;
+
   }, 200);
 
   function handleNewInput(event) {
@@ -74,7 +75,6 @@
       // If the key pressed is a letter, number, symbol, space, or the enter key, increment the totalCharactersTyped variable.
       if (isLetterOrNumberOrSymbolOrSpaceKey) {
           totalCharactersTyped++;
-          console.log(event.key);
       }
 
       if (event.key === 'Enter') {
@@ -85,14 +85,18 @@
 
       const currWord = sections[wordsTyped];
       if (currWord.indexOf(content) === 0) {
-          correctCharactersTyped++;
           currCodeElement.textContent = content;
           currCodeElement.style.color = "green";
+          correctCharactersTyped = correctCode.textContent.length + currCodeElement.textContent.length;
       }
       else {
           currCodeElement.style.color = "red";
           flashColor(textInput, "red");
       }
+
+      // Calculate the accuracy and update the DOM 
+      const accuracy = (Math.round(correctCharactersTyped/totalCharactersTyped*100,2)) | "0";
+      document.querySelector("#accuracy").textContent = accuracy + "%";
 
       if (content == currWord) {
           // add new word to correctCode
@@ -100,14 +104,14 @@
           currCodeElement.textContent = "";
           
           if (currWord[currWord.length - 1] === "\n") {
-            lineNumber++;
-            correctCode.textContent += whitespace_array[lineNumber];
+              lineNumber++;
+              correctCode.textContent += whitespace_array[lineNumber];
           }
           wordsTyped++;
           textInput.value = "";
           flashColor(textInput, "green");
           if(wordsTyped === numWords) {
-            clearInterval(wpmInterval);
+              clearInterval(wpmInterval);
               alert(`you finished with a wpm of ${wpm}`);
           }
           return;
