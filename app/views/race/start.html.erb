@@ -66,28 +66,63 @@
 
   }, 200);
 
-  function handleNewInput(event) {
+
+  function handleNewEnter(event) {
       let content = event.target.value;
-
-      // Check if the key pressed is a letter, number, symbol, space, or the enter key.
-      const isLetterOrNumberOrSymbolOrSpaceKey = /[a-z0-9_,.!?\[\]\{\}\(\):@#$%\^&\*\\\/<>\| ]/.test(String(event.key)) && String(event.key).length === 1;
-
-      // If the key pressed is a letter, number, symbol, space, or the enter key, increment the totalCharactersTyped variable.
-      if (isLetterOrNumberOrSymbolOrSpaceKey) {
-          totalCharactersTyped++;
-      }
-
       if (event.key === 'Enter') {
           totalCharactersTyped++;
           event.preventDefault(); // Disable the default Enter key behavior
           content += '\n'; // Append a newline character
       }
+      else {
+          return;
+      }
+      const currWord = sections[wordsTyped];
+      if (currWord.indexOf(content) === 0) {
+          currCodeElement.textContent = content;
+          currCodeElement.style.color = "green";
+          correctCharactersTyped = correctCode.textContent.length + currCodeElement.textContent.length;
+          console.log(correctCharactersTyped, totalCharactersTyped);
+      }
+      else {
+          currCodeElement.style.color = "red";
+          flashColor(textInput, "red");
+      }
+
+      // Calculate the accuracy and update the DOM 
+      const accuracy = (Math.round((correctCharactersTyped/totalCharactersTyped)*100,2)) | "0";
+      document.querySelector("#accuracy").textContent = accuracy + "%";
+
+      if (content == currWord) {
+          // add new word to correctCode
+          correctCode.textContent += currWord;
+          currCodeElement.textContent = "";
+          
+          if (currWord[currWord.length - 1] === "\n") {
+              lineNumber++;
+              correctCode.textContent += whitespace_array[lineNumber];
+          }
+          wordsTyped++;
+          textInput.value = "";
+          flashColor(textInput, "green");
+          if(wordsTyped === numWords) {
+              clearInterval(wpmInterval);
+              alert(`you finished with a wpm of ${wpm}`);
+          }
+          return;
+      }
+  }
+  
+  function handleNewInput(event) {
+      let content = event.target.value;
+      totalCharactersTyped++;
 
       const currWord = sections[wordsTyped];
       if (currWord.indexOf(content) === 0) {
           currCodeElement.textContent = content;
           currCodeElement.style.color = "green";
           correctCharactersTyped = correctCode.textContent.length + currCodeElement.textContent.length;
+          console.log(correctCharactersTyped, totalCharactersTyped);
       }
       else {
           currCodeElement.style.color = "red";
@@ -119,6 +154,7 @@
   }
 
 
-  textInput.addEventListener('keyup', handleNewInput, event);
+  textInput.addEventListener('input', handleNewInput, event);
+  textInput.addEventListener('keyup', handleNewEnter, event);
 
 </script>
